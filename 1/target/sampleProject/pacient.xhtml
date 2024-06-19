@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:p="http://primefaces.org/ui" >
+
+<h:head>
+	<meta charset="UTF-8"/>
+	<title>e-zdravje</title>
+</h:head>
+
+<h:body>
+	[ <a href="#{facesContext.externalContext.applicationContextPath}/faces/index.html">Domov</a> |
+	<a href="#{facesContext.externalContext.applicationContextPath}/faces/pacient.xhtml">Pacient</a> |
+	<a href="#{facesContext.externalContext.applicationContextPath}/faces/zdravnik.xhtml">Zdravnik</a> |
+	<a href="#{facesContext.externalContext.applicationContextPath}/faces/pregled.xhtml">Pregled</a>]
+	<hr/>
+	<h1>Dodaj pacienta</h1>
+
+	<f:view>
+		<h:form>
+
+			Ime:
+			<h:inputText id="p_ime" value="#{pacient.selectedPacient.ime}"/>
+			<br/>
+			Priimek:
+			<h:inputText id="p_priimek" value="#{pacient.selectedPacient.priimek}"/>
+			<br/>
+			E-mail:
+			<h:inputText id="p_email" value="#{pacient.selectedPacient.email}"/>
+			<br/>
+			Datum rojstva:
+			<h:inputText value="#{pacient.selectedPacient.datumRojstva}">
+				<f:convertDateTime pattern="yyyy-MM-dd"/>
+			</h:inputText>
+			<br/>
+			Zdravnika:
+			<h:selectOneMenu value="#{pacient.zdravnikEmail}">
+				<f:selectItem itemValue="null"/>
+				<f:selectItems value="#{zdravnik.getAllZdravnikiEmail()}"/>
+			</h:selectOneMenu>
+			<br/>
+			Posebnosti:
+			<h:inputText value="#{pacient.selectedPacient.posebnosti}"/>
+			<br/>
+			<br/>
+			<h:commandButton value="Save" actionListener="#{pacient.savePacient()}"/>
+
+
+			<h1>Vsi pacienti</h1>
+
+			<h:dataTable value="#{pacient.getAllPacients()}" var="p">
+				<h:column>#{p.email}</h:column>
+				<h:column>#{p.ime}</h:column>
+				<h:column>#{p.priimek}</h:column>
+				<h:column>
+					<h:commandButton value="Uredi" actionListener="#{pacient.setSelectedEmail(p.email)}"/>
+				</h:column>
+				<h:column>
+					<h:commandButton value="Izbriši"
+									 onclick="if (! confirm('Ste prepičani, da želite izbrisati pacienta?') ) { return false;}; return true; "
+									 actionListener="#{pacient.deletePacient(p.email)}"/>
+				</h:column>
+			</h:dataTable>
+
+		</h:form>
+	</f:view>
+
+</h:body>
+
+</html>

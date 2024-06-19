@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+		<meta charset="UTF-8" />
+		<title>e-zdravje</title>
+	</h:head>
+	
+	<h:body>
+		[ <a href="#{facesContext.externalContext.applicationContextPath}/faces/index.html">Domov</a> |
+		<a href="#{facesContext.externalContext.applicationContextPath}/faces/pacient.xhtml">Pacient</a> |
+		<a href="#{facesContext.externalContext.applicationContextPath}/faces/zdravnik.xhtml">Zdravnik</a> |
+		<a href="#{facesContext.externalContext.applicationContextPath}/faces/pregled.xhtml">Pregled</a>]
+		<hr />
+		<h1>Pregled</h1>
+		
+		<f:view>
+			<h:form>
+				<h1>Pacienti z zdravnikom</h1>
+
+				<h:dataTable value="#{zdravnik.getAllZdravniki()}" var="z">
+					<h:column>
+						<f:facet name="header">Zdravnik</f:facet>
+						#{z.ime} #{z.priimek}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Pacienti</f:facet>
+						<h:dataTable value="#{pacient.getPacientiWithDoctor(z.email)}" var="p">
+							<h:column>#{p.ime}</h:column>
+							<h:column>#{p.priimek}</h:column>
+						</h:dataTable>
+					</h:column>
+				</h:dataTable>
+
+				<hr/>
+
+				<h1>Pacienti brez zdravnika</h1>
+				<h:dataTable value="#{pacient.getPacientiNoDoctor()}" var="o" >
+					<h:column>#{o.ime}</h:column>
+					<h:column>#{o.priimek}</h:column>
+				</h:dataTable>
+
+			</h:form>
+		</f:view>
+	</h:body>
+	
+</html>
